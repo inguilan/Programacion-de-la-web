@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Tareas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        #nuevaTarea {
+            width: 80%;
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        #agregarTarea {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #agregarTarea:hover {
+            background-color: #45a049;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .tarea {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background-color: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 5px 0;
+            transition: background-color 0.3s;
+        }
+
+        .tarea:hover {
+            background-color: #e0e0e0;
+        }
+
+        .completada {
+            text-decoration: line-through;
+            color: grey;
+        }
+
+        .contador {
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Lista de Tareas</h2>
+        <input type="text" id="nuevaTarea" placeholder="Escribe una nueva tarea">
+        <button id="agregarTarea">Agregar Tarea</button>
+        <ul id="listaTareas"></ul>
+        <div class="contador" id="contadorTareas"></div>
+    </div>
+
+    <script>
+        const inputTarea = document.getElementById('nuevaTarea');
+        const botonAgregar = document.getElementById('agregarTarea');
+        const listaTareas = document.getElementById('listaTareas');
+        const contadorTareas = document.getElementById('contadorTareas');
+        let tareas = JSON.parse(localStorage.getItem('tareas')) || [];
+
+        // Función para actualizar el contador de tareas
+        function actualizarContador() {
+            const completadas = tareas.filter(tarea => tarea.completada).length;
+            const restantes = tareas.length - completadas;
+            contadorTareas.textContent = `Tareas restantes: ${restantes} | Tareas completadas: ${completadas}`;
+        }
+
+        // Función para renderizar las tareas en la lista
+        function renderizarTareas() {
+            listaTareas.innerHTML = '';
+            tareas.forEach((tarea, index) => {
+                const li = document.createElement('li');
+                li.classList.add('tarea');
+                if (tarea.completada) {
+                    li.classList.add('completada');
+                }
+
+                li.textContent = tarea.texto;
+
+                // Marcar como completada
+                li.addEventListener('click', () => {
+                    tarea.completada = !tarea.completada;
+                    localStorage.setItem('tareas', JSON.stringify(tareas));
+                    renderizarTareas(); // Vuelve a renderizar la lista
+                    actualizarContador();
+                });
+
+                // Eliminar tarea
+                li.addEventListener('dblclick', () => {
+                    tareas.splice(index, 1); // Elimina la tarea del array
+                    localStorage.setItem('tareas', JSON.stringify(tareas));
+                    renderizarTareas();
+                    actualizarContador();
+                });
+
+                listaTareas.appendChild(li);
+            });
+            actualizarContador();
+        }
+
+        // Función para agregar tarea
+        function agregarTarea() {
+            const tareaTexto = inputTarea.value.trim();
+            if (tareaTexto !== '') {
+                const nuevaTarea = { texto: tareaTexto, completada: false };
+                tareas.push(nuevaTarea);
+                localStorage.setItem('tareas', JSON.stringify(tareas));
+                inputTarea.value = ''; // Limpiar campo de entrada
+                renderizarTareas();
+            }
+        }
+
+        // Agregar tarea al presionar "Enter"
+        inputTarea.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                agregarTarea();
+            }
+        });
+
+        // Agregar tarea al hacer clic en el botón
+        botonAgregar.addEventListener('click', agregarTarea);
+
+        // Renderizar las tareas al cargar la página
+        renderizarTareas();
+    </script>
+
+</body>
+</html>

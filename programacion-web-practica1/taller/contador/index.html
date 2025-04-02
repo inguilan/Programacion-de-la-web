@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Contador de Caracteres</title>
+</head>
+<body>
+
+    <h2>Deja tu comentario:</h2>
+    <textarea id="comentarios" rows="4" cols="50" placeholder="Escribe tu comentario aquí..."></textarea>
+    <p id="contador">Caracteres restantes: 200</p>
+
+    <script>
+        const textarea = document.getElementById('comentarios');
+        const contador = document.getElementById('contador');
+        const maxCaracteres = 200;
+
+        textarea.addEventListener('input', () => {
+            const caracteresRestantes = maxCaracteres - textarea.value.length;
+            contador.textContent = `Caracteres restantes: ${caracteresRestantes}`;
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería Interactiva</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .galeria {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .miniatura {
+            width: 100px;
+            height: 100px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .miniatura:hover {
+            transform: scale(1.1);
+        }
+
+        .vista-previa {
+            margin-top: 20px;
+            width: 300px;
+            height: 300px;
+            border: 2px solid #000;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .vista-previa img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .descripcion {
+            margin-top: 10px;
+            font-size: 1.2em;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Galería de Proyectos</h2>
+        <div class="galeria">
+            <!-- Agregando las imágenes con los enlaces proporcionados -->
+            <img class="miniatura" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNW5KcqiJ95Ihoqdjvl69Ysz6uCtVyVaWU8Q&s" alt="Proyecto 1">
+            <img class="miniatura" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6OZ4ZIIiLUWXorKWSJZ17vDwpWHyNhQL3Pw&s" alt="Proyecto 2">
+            <img class="miniatura" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbgPUoglSTax3-2l5zCS0PJ-woT7tH3vbqOA&s" alt="Proyecto 3">
+            <!-- Nuevas imágenes con los enlaces proporcionados -->
+            <img class="miniatura" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkxprZgl9OyQlxt4jL6lNd5MlHW3pTz0dV1w&s" alt="Proyecto 4">
+            <img class="miniatura" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLhObS7t1C7zWsIJRWGdyZcv-unbaB63qEHA&s" alt="Proyecto 5">
+            <img class="miniatura" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9987WYJ_e_nr-DHv5Nl4mxIFg2R-Nxc_7lw&s" alt="Proyecto 6">
+        </div>
+        <div id="vistaPrevia" class="vista-previa">
+            <img id="imagenVista" src="" alt="Vista previa">
+            <p id="descripcion"></p>
+        </div>
+    </div>
+
+    <script>
+        const miniaturas = document.querySelectorAll('.miniatura');
+        const imagenVista = document.getElementById('imagenVista');
+        const descripcion = document.getElementById('descripcion');
+
+        miniaturas.forEach(miniatura => {
+            miniatura.addEventListener('mouseover', () => {
+                imagenVista.src = miniatura.src; // Actualiza la imagen de vista previa
+                descripcion.textContent = `Descripción de ${miniatura.alt}`; // Muestra la descripción de la miniatura
+            });
+
+            miniatura.addEventListener('mouseout', () => {
+                imagenVista.src = ''; // Limpia la imagen de vista previa
+                descripcion.textContent = ''; // Limpia la descripción
+            });
+        });
+    </script>
+
+</body>
+</html>
